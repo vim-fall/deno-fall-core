@@ -13,7 +13,7 @@ export interface ActionParams {
   /**
    * The item under the cursor.
    */
-  cursorItem: ActionItem;
+  cursorItem?: ActionItem;
 
   /**
    * The items that are currently selected.
@@ -42,6 +42,9 @@ export interface ActionParams {
  * export function getAction(): Action {
  *   return {
  *     invoke: async (denops, { cursorItem }) => {
+ *       if (cursorItem == undefined) {
+ *         return false;
+ *       }
  *       // Open the cursorItem.value with `vsplit`
  *       try {
  *         const path = await fn.fnameescape(denops, cursorItem.value);
