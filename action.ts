@@ -9,6 +9,37 @@ import type { SourceItem } from "./source.ts";
 
 export type ActionItem = Omit<SourceItem, "label">;
 
+/**
+ * The action interface.
+ *
+ * Actions are responsible for processing selected items within the picker.
+ * They are applied to either the selected items or the cursor item if no items are selected.
+ *
+ * Action developers must implement this interface and export the `getAction` function
+ * from the module that satisfies the `ActionModule` interface.
+ *
+ * ```typescript
+ * import type { Action } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ * import * as fn from "https://deno.land/x/denops_std/function/mod.ts";
+ *
+ * export function getAction(): Action {
+ *   return {
+ *     invoke: async (denops, items) => {
+ *       // Open the item.value with `vsplit`
+ *       for (const item of items) {
+ *         try {
+ *           const path = await fn.fnameescape(denops, item.value);
+ *           await denops.cmd(`vsplit ${path}`);
+ *         } catch {
+ *           // Fail silently to avoid interrupting the user's operation
+ *         }
+ *       }
+ *       return false;
+ *     },
+ *   };
+ * }
+ * ```
+ */
 export interface Action {
   /**
    * Invoke the action on the specified items.
@@ -28,7 +59,7 @@ export interface Action {
 
 export interface ActionModule {
   /**
-   * Retrieve the action instance.
+   * Get the action instance.
    *
    * This method is called during action registration.
    *
@@ -38,7 +69,7 @@ export interface ActionModule {
 }
 
 /**
- * Check if the value satisfies the `ActionItem` interface.
+ * Check if the value conforms to the `ActionItem` interface.
  */
 export const isActionItem: Predicate<ActionItem> = is.ObjectOf({
   value: is.String,

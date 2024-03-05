@@ -24,6 +24,42 @@ export interface ProcessorItem extends FilterItem {
   decorations: ItemDecoration[];
 }
 
+/**
+ * The processor interface.
+ *
+ * The Processor is responsible for processing the items for the picker.
+ *
+ * It is applied to all filtered items. This is different from the Renderer, which is only applied
+ * to the visible items. For example, if you want to sort the items by a specific order, you should
+ * use the processor instead of the Renderer.
+ *
+ * Processor developers must implement this interface and export the `getProcessor` function
+ * from the module that satisfies the `ProcessorModule` interface.
+ *
+ * ```typescript
+ * import type { Processor, ProcessorItem } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ *
+ * export function getProcessor(): Processor {
+ *   return {
+ *     getStream: (denops) => {
+ *       // Sort the items in lexicographical order
+ *       const items: ProcessorItem[] = [];
+ *       return new TransformStream({
+ *         transform(chunk) {
+ *           items.push(chunk);
+ *         },
+ *         flush(controller) {
+ *           items.sort((a, b) => a.value.localeCompare(b.value));
+ *           for (const item of items) {
+ *             controller.enqueue(item);
+ *           }
+ *         },
+ *       });
+ *     },
+ *   };
+ * }
+ * ```
+ */
 export interface Processor {
   /**
    * Get the transform stream to process the items.

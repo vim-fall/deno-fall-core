@@ -16,7 +16,7 @@ export interface FilterItem extends SourceItem {
   /**
    * Unique identifier of the item provided by the picker.
    *
-   * This identifier is used to distinguish the item in the picker.
+   * This identifier distinguishes the item in the picker.
    * Developers must preserve this value as-is.
    */
   id: unknown;
@@ -24,7 +24,7 @@ export interface FilterItem extends SourceItem {
   /**
    * Decorations to be applied to the line of the item in the picker.
    *
-   * These decorations are used to highlight the matched part of the item.
+   * These decorations highlight the matched part of the item.
    * Filter developers should respect existing `decorations` and extend them.
    *
    * Note: If `highlight` is not specified, the picker will use the default highlight group
@@ -33,6 +33,34 @@ export interface FilterItem extends SourceItem {
   decorations: ItemDecoration[];
 }
 
+/**
+ * The filter interface.
+ *
+ * The Filter is responsible for filtering items within the picker.
+ * It is applied to all items and is used to filter items based on the query.
+ *
+ * Filter developers must implement this interface and export the `getFilter` function
+ * from the module that satisfies the `FilterModule` interface.
+ *
+ * ```typescript
+ * import type { Filter } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ *
+ * export function getFilter(): Filter {
+ *   return {
+ *     getStream: (denops, query) => {
+ *       // Return the transform stream to filter the items
+ *       return new TransformStream({
+ *         async transform(chunk, controller) {
+ *           if (chunk.value.includes(query)) {
+ *             controller.enqueue(chunk);
+ *           }
+ *         },
+ *       });
+ *     },
+ *   };
+ * }
+ * ```
+ */
 export interface Filter {
   /**
    * Get the transform stream to filter the items.
@@ -54,7 +82,7 @@ export interface FilterModule {
   /**
    * Get the filter instance.
    *
-   * This method is called during the filter registration.
+   * This method is called during filter registration.
    *
    * @param options The options provided during registration.
    */

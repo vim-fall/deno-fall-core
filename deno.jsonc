@@ -1,5 +1,12 @@
 {
   "lock": false,
+  "exclude": [
+    "docs/**",
+    ".coverage/**"
+  ],
+  "imports": {
+    "https://deno.land/x/fall_core@$MODULE_VERSION/": "./"
+  },
   "tasks": {
     "test": "deno test -A --parallel --shuffle --doc --coverage=.coverage",
     "check": "deno check ./**/*.ts",

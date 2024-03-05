@@ -29,6 +29,31 @@ export interface SourceItem {
   detail?: Record<string, unknown>;
 }
 
+/**
+ * The source interface.
+ *
+ * The Source is a provider of items for the picker.
+ *
+ * Source developers must implement this interface and export the `getSource` function
+ * from the module that satisfies the `SourceModule` interface.
+ *
+ * ```typescript
+ * import type { Source } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ *
+ * export function getSource(): Source {
+ *   return {
+ *     getStream: (denops, ...args) => {
+ *       // Return a static list of items as a ReadableStream
+ *       return ReadableStream.from([
+ *         { value: "item1" },
+ *         { value: "item2" },
+ *         { value: "item3" },
+ *       ]);
+ *     },
+ *   };
+ * }
+ * ```
+ */
 export interface Source {
   /**
    * Get the stream of items.

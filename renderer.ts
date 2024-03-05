@@ -9,6 +9,35 @@ import { type FilterItem, isItemDecoration } from "./filter.ts";
 
 export type RendererItem = Omit<FilterItem, "id">;
 
+/**
+ * The renderer interface.
+ *
+ * The Renderer is responsible for rendering the items in the selector window of the picker.
+ *
+ * It is only applied to the visible items on the selector for performance reasons. This is different
+ * from the Processor, which is applied to all filtered items.
+ * For example, if you want to add NerdFont icons to the items, that modification is not necessary on
+ * invisible items, so you should use the renderer instead of the Processor.
+ *
+ * Renderer developers must implement this interface and export the `getRenderer` function
+ * from the module that satisfies the `RendererModule` interface.
+ *
+ * ```typescript
+ * import type { Renderer } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ *
+ * export function getRenderer(): Renderer {
+ *   return {
+ *     render: (denops, items) => {
+ *       // Use UPPER CASE for the label
+ *       return items.map((v) => ({
+ *         ...v,
+ *         label: (v.label ?? v.value).toUpperCase(),
+ *       }));
+ *     },
+ *   };
+ * }
+ * ```
+ */
 export interface Renderer {
   /**
    * Render the items for the picker.
@@ -37,7 +66,7 @@ export interface RendererModule {
 }
 
 /**
- * Check if the value conforms to the `RendererItem` interface.
+ * Check if the value satisfies the `RendererItem` interface.
  */
 export const isRendererItem: Predicate<RendererItem> = is.ObjectOf({
   value: is.String,

@@ -9,6 +9,35 @@ import type { FilterItem } from "./filter.ts";
 
 export type PreviewerItem = Pick<FilterItem, "value" | "detail">;
 
+/**
+ * The previewer interface.
+ *
+ * The Previewer is responsible for previewing items within the picker.
+ * Because Vim's popup window does not support opening ordinal buffers, the previewer must
+ * rewrite the buffer content with the given `bufnr` or `winid`.
+ *
+ * Previewer developers must implement this interface and export the `getPreviewer` function
+ * from the module that satisfies the `PreviewerModule` interface.
+ *
+ * ```typescript
+ * import type { Previewer } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ * import * as buffer from "https://deno.land/x/denops_std/buffer/mod.ts";
+ *
+ * export function getPreviewer(): Previewer {
+ *   return {
+ *     preview: async (denops, item, { bufnr, winid }) => {
+ *       // Write the file content of the item.value to the buffer
+ *       try {
+ *         const content = await Deno.readTextFile(item.value);
+ *         await buffer.replace(denops, bufnr, content.split("\n"));
+ *       } catch {
+ *         // Fail silently to avoid interrupting the user's operation
+ *       }
+ *     },
+ *   };
+ * }
+ * ```
+ */
 export interface Previewer {
   /**
    * Preview the item on the specified buffer or window.
