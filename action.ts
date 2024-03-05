@@ -9,6 +9,23 @@ import type { SourceItem } from "./source.ts";
 
 export type ActionItem = Omit<SourceItem, "label">;
 
+export interface ActionParams {
+  /**
+   * The item under the cursor.
+   */
+  cursorItem: ActionItem;
+
+  /**
+   * The items that are currently selected.
+   */
+  selectedItems: ActionItem[];
+
+  /**
+   * The items that are currently filtered.
+   */
+  filteredItems: ActionItem[];
+}
+
 /**
  * The action interface.
  *
@@ -24,15 +41,13 @@ export type ActionItem = Omit<SourceItem, "label">;
  *
  * export function getAction(): Action {
  *   return {
- *     invoke: async (denops, items) => {
- *       // Open the item.value with `vsplit`
- *       for (const item of items) {
- *         try {
- *           const path = await fn.fnameescape(denops, item.value);
- *           await denops.cmd(`vsplit ${path}`);
- *         } catch {
- *           // Fail silently to avoid interrupting the user's operation
- *         }
+ *     invoke: async (denops, { cursorItem }) => {
+ *       // Open the cursorItem.value with `vsplit`
+ *       try {
+ *         const path = await fn.fnameescape(denops, cursorItem.value);
+ *         await denops.cmd(`vsplit ${path}`);
+ *       } catch {
+ *         // Fail silently to avoid interrupting the user's operation
  *       }
  *       return false;
  *     },
@@ -48,12 +63,12 @@ export interface Action {
    * It should return `true` if the picker needs to continue running.
    *
    * @param denops The Denops instance.
-   * @param items The items to be processed.
+   * @param params The action parameters.
    * @returns `true` if the picker needs to continue running.
    */
   invoke: (
     denops: Denops,
-    items: ActionItem[],
+    params: ActionParams,
   ) => Promish<boolean>;
 }
 
