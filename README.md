@@ -1,6 +1,6 @@
 # 🪐 fall_core
 
-[![test](https://github.com/vim-fall/deno-fall/workflows/test/badge.svg)](https://github.com/vim-fall/deno-fall/actions?query=workflow%3Atest)
+[![test](https://github.com/vim-fall/deno-fall-core/actions/workflows/test.yml/badge.svg)](https://github.com/vim-fall/deno-fall-core/actions/workflows/test.yml)
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/fall_core/mod.ts)
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x/fall__core-lightgrey.svg?logo=deno)](https://deno.land/x/fall_core)
 
