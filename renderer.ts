@@ -5,9 +5,9 @@ import {
 } from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 
 import type { Promish } from "./_common.ts";
-import { type FilterItem, isItemDecoration } from "./filter.ts";
+import { isItemDecoration, type ProcessorItem } from "./processor.ts";
 
-export type RendererItem = Omit<FilterItem, "id">;
+export type RendererItem = Omit<ProcessorItem, "id">;
 
 /**
  * The renderer interface.
@@ -15,7 +15,7 @@ export type RendererItem = Omit<FilterItem, "id">;
  * The Renderer is responsible for rendering the items in the selector window of the picker.
  *
  * It is only applied to the visible items on the selector for performance reasons. This is different
- * from the Processor, which is applied to all filtered items.
+ * from the Processor, which is applied to all items.
  * For example, if you want to add NerdFont icons to the items, that modification is not necessary on
  * invisible items, so you should use the renderer instead of the Processor.
  *

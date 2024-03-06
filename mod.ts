@@ -6,7 +6,6 @@
  * @module
  */
 export * from "./action.ts";
-export * from "./filter.ts";
 export * from "./previewer.ts";
 export * from "./processor.ts";
 export * from "./renderer.ts";

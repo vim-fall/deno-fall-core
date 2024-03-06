@@ -1,21 +1,30 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
+import type { Decoration } from "https://deno.land/x/denops_std@v6.3.0/buffer/decoration.ts";
 import {
   is,
   type Predicate,
 } from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 
 import type { Promish } from "./_common.ts";
-import {
-  type FilterItem,
-  isItemDecoration,
-  type ItemDecoration,
-} from "./filter.ts";
+import type { SourceItem } from "./source.ts";
 
-export interface ProcessorItem extends FilterItem {
+export type ItemDecoration =
+  & Omit<Decoration, "line" | "highlight">
+  & Partial<Pick<Decoration, "highlight">>;
+
+export interface ProcessorItem extends SourceItem {
+  /**
+   * Unique identifier of the item provided by the picker.
+   *
+   * This identifier distinguishes the item in the picker.
+   * Developers must preserve this value as-is.
+   */
+  id: unknown;
+
   /**
    * Decorations to be applied to the line of the item in the picker.
    *
-   * These decorations are used to annotate the label of the item.
+   * These decorations highlight the matched part of the item, or are used for better visualization.
    * Processor developers should respect existing `decorations` and extend them.
    *
    * Note: If `highlight` is not specified, the picker will use the default highlight group
@@ -27,21 +36,42 @@ export interface ProcessorItem extends FilterItem {
 /**
  * The processor interface.
  *
- * The Processor is responsible for processing the items for the picker.
- *
- * It is applied to all filtered items. This is different from the Renderer, which is only applied
- * to the visible items. For example, if you want to sort the items by a specific order, you should
- * use the processor instead of the Renderer.
+ * The Processor is responsible for processing items within the picker.
+ * It is designed to filter, sort, and modify items.
+ * It is applied to all items, so it should be efficient.
  *
  * Processor developers must implement this interface and export the `getProcessor` function
  * from the module that satisfies the `ProcessorModule` interface.
+ *
+ * For example, if you'd like to filter items by the query, you can implement the processor as follows:
+ *
+ * ```typescript
+ * import type { Processor } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ *
+ * export function getProcessor(): Processor {
+ *   return {
+ *     getStream: (denops, query) => {
+ *       // Return the transform stream to filter the items
+ *       return new TransformStream({
+ *         async transform(chunk, controller) {
+ *           if (chunk.value.includes(query)) {
+ *             controller.enqueue(chunk);
+ *           }
+ *         },
+ *       });
+ *     },
+ *   };
+ * }
+ * ```
+ *
+ * Or if you want to sort the items by the value, you can implement the processor as follows:
  *
  * ```typescript
  * import type { Processor, ProcessorItem } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
  *
  * export function getProcessor(): Processor {
  *   return {
- *     getStream: (denops) => {
+ *     getStream: (denops, _query) => {
  *       // Sort the items in lexicographical order
  *       const items: ProcessorItem[] = [];
  *       return new TransformStream({
@@ -64,14 +94,16 @@ export interface Processor {
   /**
    * Get the transform stream to process the items.
    *
-   * This method is called when the user types the query in the picker.
+   * This method is invoked when the user types the query in the picker.
    * The stream may be frequently canceled and recreated when the query changes.
    * If the method returns `undefined`, no processing is applied.
    *
    * @param denops The Denops instance.
+   * @param query The query used to process the items.
    */
   getStream: (
     denops: Denops,
+    query: string,
   ) => Promish<TransformStream<ProcessorItem, ProcessorItem> | undefined>;
 }
 
@@ -85,6 +117,16 @@ export interface ProcessorModule {
    */
   getProcessor: (options: Record<string, unknown>) => Processor;
 }
+
+/**
+ * Check if the value conforms to the `ItemDecoration` interface.
+ */
+export const isItemDecoration: Predicate<ItemDecoration> = is.ObjectOf({
+  text: is.String,
+  column: is.Number,
+  length: is.Number,
+  highlight: is.OptionalOf(is.String),
+});
 
 /**
  * Check if the value conforms to the `ProcessorItem` interface.

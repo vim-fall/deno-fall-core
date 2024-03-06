@@ -5,9 +5,9 @@ import {
 } from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 
 import type { Promish } from "./_common.ts";
-import type { FilterItem } from "./filter.ts";
+import type { ProcessorItem } from "./processor.ts";
 
-export type PreviewerItem = Pick<FilterItem, "value" | "detail">;
+export type PreviewerItem = Pick<ProcessorItem, "value" | "detail">;
 
 /**
  * The previewer interface.

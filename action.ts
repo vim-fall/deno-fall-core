@@ -21,9 +21,9 @@ export interface ActionParams {
   selectedItems: ActionItem[];
 
   /**
-   * The items that are currently filtered.
+   * The items that processed (filtered, sorted, modified).
    */
-  filteredItems: ActionItem[];
+  processedItems: ActionItem[];
 }
 
 /**
