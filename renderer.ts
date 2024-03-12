@@ -47,10 +47,13 @@ export interface Renderer {
    *
    * @param denops The Denops instance.
    * @param items The items to be displayed.
+   * @param params.bufnr The buffer number of the selector window.
+   * @param params.winid The window ID of the selector window.
    */
   render: (
     denops: Denops,
     items: RendererItem[],
+    params: { bufnr: number; winid: number },
   ) => Promish<RendererItem[]>;
 }
 
