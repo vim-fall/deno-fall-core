@@ -69,6 +69,23 @@ export interface Source {
     denops: Denops,
     ...args: string[]
   ) => Promish<ReadableStream<SourceItem> | undefined>;
+
+  /**
+   * Get the completion candidates.
+   *
+   * This method is called when the user try to complete source arguments.
+   *
+   * @param denops The Denops instance.
+   * @param arglead The leading string of the argument.
+   * @param cmdline The whole command line.
+   * @param cursorpos The cursor position in the command line.
+   */
+  getCompletion?: (
+    denops: Denops,
+    arglead: string,
+    cmdline: string,
+    cursorpos: number,
+  ) => Promish<string[]>;
 }
 
 export interface SourceModule {
