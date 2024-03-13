@@ -1,9 +1,9 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 
 import type { Promish } from "./_common.ts";
-import type { ProcessorItem } from "./processor.ts";
+import type { Item } from "./item.ts";
 
-export type PreviewerItem = Pick<ProcessorItem, "value" | "detail">;
+export type PreviewerItem = Pick<Item, "value" | "detail">;
 
 /**
  * The previewer interface.

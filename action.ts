@@ -1,9 +1,9 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 
 import type { Promish } from "./_common.ts";
-import type { SourceItem } from "./source.ts";
+import type { Item } from "./item.ts";
 
-export type ActionItem = Omit<SourceItem, "label">;
+export type ActionItem = Pick<Item, "value" | "detail">;
 
 export interface ActionParams {
   /**

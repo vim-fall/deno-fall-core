@@ -1,33 +1,7 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
-import type { Decoration } from "https://deno.land/x/denops_std@v6.3.0/buffer/decoration.ts";
 
 import type { Promish } from "./_common.ts";
-import type { SourceItem } from "./source.ts";
-
-export type ItemDecoration =
-  & Omit<Decoration, "line" | "highlight">
-  & Partial<Pick<Decoration, "highlight">>;
-
-export interface ProcessorItem extends SourceItem {
-  /**
-   * Unique identifier of the item provided by the picker.
-   *
-   * This identifier distinguishes the item in the picker.
-   * Developers must preserve this value as-is.
-   */
-  id: unknown;
-
-  /**
-   * Decorations to be applied to the line of the item in the picker.
-   *
-   * These decorations highlight the matched part of the item, or are used for better visualization.
-   * Processor developers should respect existing `decorations` and extend them.
-   *
-   * Note: If `highlight` is not specified, the picker will use the default highlight group
-   * for highlighting the matched part.
-   */
-  decorations: ItemDecoration[];
-}
+import type { Item } from "./item.ts";
 
 /**
  * The processor interface.
@@ -63,13 +37,13 @@ export interface ProcessorItem extends SourceItem {
  * Or if you want to sort the items by the value, you can implement the processor as follows:
  *
  * ```typescript
- * import type { Processor, ProcessorItem } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ * import type { Processor, Item } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
  *
  * export function getProcessor(): Processor {
  *   return {
  *     getStream: (denops, _query) => {
  *       // Sort the items in lexicographical order
- *       const items: ProcessorItem[] = [];
+ *       const items: Item[] = [];
  *       return new TransformStream({
  *         transform(chunk) {
  *           items.push(chunk);
@@ -100,7 +74,7 @@ export interface Processor {
   getStream: (
     denops: Denops,
     query: string,
-  ) => Promish<TransformStream<ProcessorItem, ProcessorItem> | undefined>;
+  ) => Promish<TransformStream<Item, Item> | undefined>;
 }
 
 export interface ProcessorModule {
@@ -113,3 +87,5 @@ export interface ProcessorModule {
    */
   getProcessor: (options: Record<string, unknown>) => Processor;
 }
+
+export type { Item };

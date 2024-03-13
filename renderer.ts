@@ -1,9 +1,12 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 
 import type { Promish } from "./_common.ts";
-import type { ProcessorItem } from "./processor.ts";
+import type { Item } from "./item.ts";
 
-export type RendererItem = Omit<ProcessorItem, "id">;
+export type RendererItem = Pick<
+  Item,
+  "value" | "label" | "detail" | "decorations"
+>;
 
 /**
  * The renderer interface.

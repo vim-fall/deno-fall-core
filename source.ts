@@ -1,29 +1,12 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 
-import type { Promish } from "./_common.ts";
+import type { FlatType, Promish } from "./_common.ts";
+import type { Item } from "./item.ts";
 
-export interface SourceItem {
-  /**
-   * The value of the item.
-   */
-  value: string;
-
-  /**
-   * The display label of the item.
-   *
-   * This label is used to display the item in the picker.
-   * If not specified, `value` is used.
-   */
-  label?: string;
-
-  /**
-   * The detailed information of the item.
-   *
-   * This information is used in further processing, such as `Filter`, `Processor`, `Renderer`, `Previewer`, and `Action`.
-   * Developers should verify if the `detail` has the expected structure before using it and ignore the item if it does not.
-   */
-  detail?: Record<string, unknown>;
-}
+export type SourceItem = FlatType<
+  & Pick<Item, "value" | "label">
+  & Partial<Pick<Item, "detail">>
+>;
 
 /**
  * The source interface.
