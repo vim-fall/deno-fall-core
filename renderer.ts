@@ -1,11 +1,7 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
-import {
-  is,
-  type Predicate,
-} from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 
 import type { Promish } from "./_common.ts";
-import { isItemDecoration, type ProcessorItem } from "./processor.ts";
+import type { ProcessorItem } from "./processor.ts";
 
 export type RendererItem = Omit<ProcessorItem, "id">;
 
@@ -67,13 +63,3 @@ export interface RendererModule {
    */
   getRenderer: (options: Record<string, unknown>) => Renderer;
 }
-
-/**
- * Check if the value satisfies the `RendererItem` interface.
- */
-export const isRendererItem: Predicate<RendererItem> = is.ObjectOf({
-  value: is.String,
-  label: is.OptionalOf(is.String),
-  detail: is.OptionalOf(is.RecordOf(is.Unknown, is.String)),
-  decorations: is.ArrayOf(isItemDecoration),
-});

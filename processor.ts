@@ -1,9 +1,5 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 import type { Decoration } from "https://deno.land/x/denops_std@v6.3.0/buffer/decoration.ts";
-import {
-  is,
-  type Predicate,
-} from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 
 import type { Promish } from "./_common.ts";
 import type { SourceItem } from "./source.ts";
@@ -117,24 +113,3 @@ export interface ProcessorModule {
    */
   getProcessor: (options: Record<string, unknown>) => Processor;
 }
-
-/**
- * Check if the value conforms to the `ItemDecoration` interface.
- */
-export const isItemDecoration: Predicate<ItemDecoration> = is.ObjectOf({
-  text: is.String,
-  column: is.Number,
-  length: is.Number,
-  highlight: is.OptionalOf(is.String),
-});
-
-/**
- * Check if the value conforms to the `ProcessorItem` interface.
- */
-export const isProcessorItem: Predicate<ProcessorItem> = is.ObjectOf({
-  id: is.Unknown,
-  value: is.String,
-  label: is.OptionalOf(is.String),
-  detail: is.OptionalOf(is.RecordOf(is.Unknown, is.String)),
-  decorations: is.ArrayOf(isItemDecoration),
-});

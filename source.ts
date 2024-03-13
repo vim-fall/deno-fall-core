@@ -1,8 +1,4 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
-import {
-  is,
-  type Predicate,
-} from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 
 import type { Promish } from "./_common.ts";
 
@@ -98,12 +94,3 @@ export interface SourceModule {
    */
   getSource: (options: Record<string, unknown>) => Source;
 }
-
-/**
- * Check if the value conforms to the `SourceItem` interface.
- */
-export const isSourceItem: Predicate<SourceItem> = is.ObjectOf({
-  value: is.String,
-  label: is.OptionalOf(is.String),
-  detail: is.OptionalOf(is.RecordOf(is.Unknown, is.String)),
-});

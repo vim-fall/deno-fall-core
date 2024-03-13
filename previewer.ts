@@ -1,8 +1,4 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
-import {
-  is,
-  type Predicate,
-} from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 
 import type { Promish } from "./_common.ts";
 import type { ProcessorItem } from "./processor.ts";
@@ -71,11 +67,3 @@ export interface PreviewerModule {
    */
   getPreviewer: (options: Record<string, unknown>) => Previewer;
 }
-
-/**
- * Check if the value conforms to the `PreviewerItem` interface.
- */
-export const isPreviewerItem: Predicate<PreviewerItem> = is.ObjectOf({
-  value: is.String,
-  detail: is.OptionalOf(is.RecordOf(is.Unknown, is.String)),
-});
