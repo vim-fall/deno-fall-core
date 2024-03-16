@@ -37,6 +37,7 @@ export interface Sorter {
   sort: (
     denops: Denops,
     items: Item[],
+    { signal }: { signal?: AbortSignal },
   ) => Promish<Item[]>;
 }
 

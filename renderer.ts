@@ -52,6 +52,7 @@ export interface Renderer {
     denops: Denops,
     items: RendererItem[],
     params: { width: number },
+    { signal }: { signal?: AbortSignal },
   ) => Promish<RendererItem[]>;
 }
 

@@ -68,6 +68,7 @@ export interface Action {
   invoke: (
     denops: Denops,
     params: ActionParams,
+    { signal }: { signal?: AbortSignal },
   ) => Promish<boolean>;
 }
 

@@ -54,6 +54,7 @@ export interface Previewer {
       bufnr: number;
       winid: number;
     },
+    { signal }: { signal?: AbortSignal },
   ) => Promish<void>;
 }
 

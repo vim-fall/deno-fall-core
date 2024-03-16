@@ -45,6 +45,7 @@ export interface Filter {
   getStream: (
     denops: Denops,
     query: string,
+    { signal }: { signal?: AbortSignal },
   ) => Promish<TransformStream<Item, Item> | undefined>;
 }
 
