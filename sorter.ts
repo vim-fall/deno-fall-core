@@ -16,9 +16,11 @@ import type { Item } from "./item.ts";
  *
  * export function getSorter(): Sorter {
  *   return {
- *     sort: (_denops, items) => {
- *       // Sort items in lexicographical order
- *       return items.toSorted((a, b) => a.value.localeCompare(b.value));
+ *     sort: (_denops, items, { signal }) => {
+ *       if (signal?.aborted) return items;
+ *       // Sort items in lexicographical order in-place
+ *       items.sort((a, b) => a.value.localeCompare(b.value));
+ *       return items;
  *     },
  *   };
  * }
@@ -33,11 +35,12 @@ export interface Sorter {
    *
    * @param denops The Denops instance.
    * @param items The items to be sorted.
+   * @param options.signal The signal to abort the sorting.
    */
   sort: (
     denops: Denops,
     items: Item[],
-    { signal }: { signal?: AbortSignal },
+    options: { signal?: AbortSignal },
   ) => Promish<Item[]>;
 }
 

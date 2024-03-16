@@ -26,7 +26,8 @@ export type RendererItem = Pick<
  *
  * export function getRenderer(): Renderer {
  *   return {
- *     render: (denops, items, _params) => {
+ *     render: (denops, items, _params, { signal }) => {
+ *       if (signal?.aborted) return items;
  *       // Use UPPER CASE for the label
  *       return items.map((v) => ({
  *         ...v,
@@ -47,12 +48,13 @@ export interface Renderer {
    * @param denops The Denops instance.
    * @param items The items to be displayed.
    * @param params.width The selector window width.
+   * @param options.signal The signal to abort the rendering.
    */
   render: (
     denops: Denops,
     items: RendererItem[],
     params: { width: number },
-    { signal }: { signal?: AbortSignal },
+    options: { signal?: AbortSignal },
   ) => Promish<RendererItem[]>;
 }
 

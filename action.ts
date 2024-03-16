@@ -37,13 +37,15 @@ export interface ActionParams {
  *
  * export function getAction(): Action {
  *   return {
- *     invoke: async (denops, { cursorItem }) => {
+ *     invoke: async (denops, { cursorItem }, { signal }) => {
+ *       if (signal?.aborted) return;
  *       if (cursorItem == undefined) {
  *         return false;
  *       }
  *       // Open the cursorItem.value with `vsplit`
  *       try {
  *         const path = await fn.fnameescape(denops, cursorItem.value);
+ *         if (signal?.aborted) return;
  *         await denops.cmd(`vsplit ${path}`);
  *       } catch {
  *         // Fail silently to avoid interrupting the user's operation
@@ -63,12 +65,13 @@ export interface Action {
    *
    * @param denops The Denops instance.
    * @param params The action parameters.
+   * @param options.signal The signal to abort the action.
    * @returns `true` if the picker needs to continue running.
    */
   invoke: (
     denops: Denops,
     params: ActionParams,
-    { signal }: { signal?: AbortSignal },
+    options: { signal?: AbortSignal },
   ) => Promish<boolean>;
 }
 

@@ -21,10 +21,12 @@ export type PreviewerItem = Pick<Item, "value" | "detail">;
  *
  * export function getPreviewer(): Previewer {
  *   return {
- *     preview: async (denops, item, { bufnr, winid }) => {
+ *     preview: async (denops, item, { bufnr }, { signal }) => {
+ *       if (signal?.aborted) return;
  *       // Write the file content of the item.value to the buffer
  *       try {
  *         const content = await Deno.readTextFile(item.value);
+ *         if (signal?.aborted) return;
  *         await buffer.replace(denops, bufnr, content.split("\n"));
  *       } catch {
  *         // Fail silently to avoid interrupting the user's operation
@@ -46,6 +48,7 @@ export interface Previewer {
    * @param item The item to be previewed.
    * @param target.bufnr The buffer number for previewing the item.
    * @param target.winid The window ID for previewing the item.
+   * @param options.signal The signal to abort the preview.
    */
   preview: (
     denops: Denops,
@@ -54,7 +57,7 @@ export interface Previewer {
       bufnr: number;
       winid: number;
     },
-    { signal }: { signal?: AbortSignal },
+    options: { signal?: AbortSignal },
   ) => Promish<void>;
 }
 

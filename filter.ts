@@ -17,7 +17,8 @@ import type { Item } from "./item.ts";
  *
  * export function getFilter(): Filter {
  *   return {
- *     getStream: (denops, query) => {
+ *     getStream: (denops, query, { signal }) => {
+ *       if (signal?.aborted) return undefined;
  *       // Return the transform stream to filter the items
  *       return new TransformStream({
  *         async transform(chunk, controller) {
@@ -41,11 +42,12 @@ export interface Filter {
    *
    * @param denops The Denops instance.
    * @param query The query used to filter the items.
+   * @param options.signal The signal to abort the filter.
    */
   getStream: (
     denops: Denops,
     query: string,
-    { signal }: { signal?: AbortSignal },
+    options: { signal?: AbortSignal },
   ) => Promish<TransformStream<Item, Item> | undefined>;
 }
 
