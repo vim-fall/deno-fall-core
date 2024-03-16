@@ -40,7 +40,7 @@ export interface ActionParams {
  *     invoke: async (denops, { cursorItem }, { signal }) => {
  *       if (signal?.aborted) return;
  *       if (cursorItem == undefined) {
- *         return false;
+ *         return;
  *       }
  *       // Open the cursorItem.value with `vsplit`
  *       try {
@@ -50,7 +50,6 @@ export interface ActionParams {
  *       } catch {
  *         // Fail silently to avoid interrupting the user's operation
  *       }
- *       return false;
  *     },
  *   };
  * }
@@ -72,7 +71,7 @@ export interface Action {
     denops: Denops,
     params: ActionParams,
     options: { signal?: AbortSignal },
-  ) => Promish<boolean>;
+  ) => Promish<boolean | void>;
 }
 
 export interface ActionModule {
