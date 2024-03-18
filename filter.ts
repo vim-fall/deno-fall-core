@@ -34,6 +34,11 @@ import type { Item } from "./item.ts";
  */
 export interface Filter {
   /**
+   * Description of the filter.
+   */
+  readonly description?: string;
+
+  /**
    * Get the transform stream to filter the items.
    *
    * This method is invoked when the user types the query in the picker.

@@ -28,6 +28,11 @@ import type { Item } from "./item.ts";
  */
 export interface Sorter {
   /**
+   * Description of the sorter.
+   */
+  readonly description?: string;
+
+  /**
    * Sort the items for the picker.
    *
    * This method is called when the picker filtered the items on the selector.

@@ -40,6 +40,11 @@ export type RendererItem = Pick<
  */
 export interface Renderer {
   /**
+   * Description of the renderer.
+   */
+  readonly description?: string;
+
+  /**
    * Render the items for the picker.
    *
    * This method is called when the picker displays the items on the selector.

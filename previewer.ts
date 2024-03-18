@@ -38,6 +38,11 @@ export type PreviewerItem = Pick<Item, "value" | "detail">;
  */
 export interface Previewer {
   /**
+   * Description of the previewer.
+   */
+  readonly description?: string;
+
+  /**
    * Preview the item on the specified buffer or window.
    *
    * This method is called when the picker attempts to preview the item.

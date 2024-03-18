@@ -57,6 +57,11 @@ export interface ActionParams {
  */
 export interface Action {
   /**
+   * Description of the action.
+   */
+  readonly description?: string;
+
+  /**
    * Invoke the action on the specified items.
    *
    * This method is called when the user triggers the action.

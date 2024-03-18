@@ -35,6 +35,11 @@ export type SourceItem = FlatType<
  */
 export interface Source {
   /**
+   * Description of the source.
+   */
+  readonly description?: string;
+
+  /**
    * Get the stream of items.
    *
    * This method is called when the picker is started.
