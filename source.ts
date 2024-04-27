@@ -8,6 +8,8 @@ export type SourceItem = FlatType<
   & Partial<Pick<Item, "detail">>
 >;
 
+export type SourceOptions = Record<string, unknown>;
+
 /**
  * The source interface.
  *
@@ -21,7 +23,7 @@ export type SourceItem = FlatType<
  *
  * export function getSource(): Source {
  *   return {
- *     getStream: (denops, ...args) => {
+ *     getStream: (denops, _cmdline, _options) => {
  *       // Return a static list of items as a ReadableStream
  *       return ReadableStream.from([
  *         { value: "item1" },
@@ -47,11 +49,13 @@ export interface Source {
    * If the method returns `undefined`, the picker is canceled.
    *
    * @param denops The Denops instance.
-   * @param args The arguments passed to the picker.
+   * @param cmdline The arguments passed to the picker.
+   * @params options The options passed to the picker. It will overwrite the source options provided during registration.
    */
   getStream: (
     denops: Denops,
-    ...args: string[]
+    cmdline: string,
+    options: SourceOptions,
   ) => Promish<ReadableStream<SourceItem> | undefined>;
 
   /**
@@ -80,5 +84,5 @@ export interface SourceModule {
    *
    * @param options The options provided during registration.
    */
-  getSource: (options: Record<string, unknown>) => Source;
+  getSource: (options: SourceOptions) => Source;
 }
