@@ -54,6 +54,7 @@ export interface Previewer {
    * @param target.bufnr The buffer number for previewing the item.
    * @param target.winid The window ID for previewing the item.
    * @param options.signal The signal to abort the preview.
+   * @return `true` if the previewer need to try next previewer.
    */
   preview: (
     denops: Denops,
@@ -63,7 +64,7 @@ export interface Previewer {
       winid: number;
     },
     options: { signal?: AbortSignal },
-  ) => Promish<void>;
+  ) => Promish<void | boolean>;
 }
 
 export interface PreviewerModule {

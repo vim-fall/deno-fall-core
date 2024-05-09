@@ -8,8 +8,6 @@ export type SourceItem = FlatType<
   & Partial<Pick<Item, "detail">>
 >;
 
-export type SourceOptions = Record<string, unknown>;
-
 /**
  * The source interface.
  *
@@ -21,9 +19,9 @@ export type SourceOptions = Record<string, unknown>;
  * ```typescript
  * import type { Source } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
  *
- * export function getSource(): Source {
+ * export function getSource(options: Record<string, unknown>): Source {
  *   return {
- *     getStream: (denops, _cmdline, _options) => {
+ *     getStream: (denops, _cmdline) => {
  *       // Return a static list of items as a ReadableStream
  *       return ReadableStream.from([
  *         { value: "item1" },
@@ -50,12 +48,10 @@ export interface Source {
    *
    * @param denops The Denops instance.
    * @param cmdline The arguments passed to the picker.
-   * @params options The options passed to the picker. It will overwrite the source options provided during registration.
    */
   getStream: (
     denops: Denops,
     cmdline: string,
-    options: SourceOptions,
   ) => Promish<ReadableStream<SourceItem> | undefined>;
 
   /**
@@ -82,7 +78,7 @@ export interface SourceModule {
    *
    * This method is called during source registration.
    *
-   * @param options The options provided during registration.
+   * @param options The options provided during registration. Should be applied globally.
    */
-  getSource: (options: SourceOptions) => Source;
+  getSource: (options: Record<string, unknown>) => Source;
 }

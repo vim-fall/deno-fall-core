@@ -87,5 +87,5 @@ export interface ActionModule {
    *
    * @param options The options provided during registration.
    */
-  getAction: (options: Record<string, unknown>) => Promish<Action>;
+  getAction: (options: Record<string, unknown>) => Action;
 }
