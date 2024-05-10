@@ -1,24 +1,14 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
-
-import type { Promish } from "./_common.ts";
-import type { Item } from "./item.ts";
-
 /**
- * The filter interface.
- *
- * The Filter is responsible for filtering items in the picker.
- * It is applied to all items, so it should be efficient.
- *
- * Filter developers must implement this interface and export the `getFilter` function
- * from the module that satisfies the `FilterModule` interface.
+ * Extension developers must implement and export `getFilter` function to create an extension.
  *
  * ```typescript
- * import type { Filter } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ * import type { GetFilter } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
  *
- * export function getFilter(): Filter {
+ * export const getFilter: GetFilter = (_denops, _options) => {
  *   return {
- *     getStream: (denops, query, { signal }) => {
+ *     stream({ query }, { signal }) {
  *       if (signal?.aborted) return undefined;
+ *
  *       // Return the transform stream to filter the items
  *       return new TransformStream({
  *         async transform(chunk, controller) {
@@ -29,8 +19,28 @@ import type { Item } from "./item.ts";
  *       });
  *     },
  *   };
- * }
+ * };
  * ```
+ * @module
+ */
+import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
+
+import type { Promish } from "./_common.ts";
+import type { Item } from "./item.ts";
+
+export type { Item };
+
+export interface FilterParams {
+  /**
+   * The query that user has input.
+   */
+  query: string;
+}
+
+/**
+ * Filter is responsible for filtering items in the picker.
+ *
+ * The filter is applied to the stream of the items.
  */
 export interface Filter {
   /**
@@ -43,28 +53,26 @@ export interface Filter {
    *
    * This method is invoked when the user types the query in the picker.
    * The stream may be frequently canceled and recreated when the query changes.
-   * If the method returns `undefined`, no filter is applied.
+   * If the method returns `undefined`, this filter won't be applied.
    *
-   * @param denops The Denops instance.
-   * @param query The query used to filter the items.
+   * @param params The filter parameters.
    * @param options.signal The signal to abort the filter.
    */
-  getStream: (
-    denops: Denops,
-    query: string,
+  stream: (
+    params: FilterParams,
     options: { signal?: AbortSignal },
   ) => Promish<TransformStream<Item, Item> | undefined>;
 }
 
-export interface FilterModule {
-  /**
-   * Get the filter instance.
-   *
-   * This method is called during filter registration.
-   *
-   * @param options The options provided during registration.
-   */
-  getFilter: (options: Record<string, unknown>) => Filter;
-}
-
-export type { Item };
+/**
+ * Get the filter instance.
+ *
+ * This function is called when the picker is started.
+ *
+ * @param denops The Denops instance.
+ * @param options The options of the extension.
+ */
+export type GetFilter = (
+  denops: Denops,
+  options: Record<string, unknown>,
+) => Promish<Filter>;

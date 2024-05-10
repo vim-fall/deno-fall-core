@@ -1,3 +1,31 @@
+/**
+ * Extension developers must implement and export `getAction` function to create an extension.
+ *
+ * ```typescript
+ * import type { GetAction } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ * import * as fn from "https://deno.land/x/denops_std/function/mod.ts";
+ *
+ * export const getAction: GetAction = (denops, _options) => {
+ *   return {
+ *     async trigger({ cursorItem }, { signal }) {
+ *       if (signal?.aborted) return;
+ *       if (cursorItem == undefined) return;
+ *
+ *       // Open the cursorItem.value with `vsplit`
+ *       try {
+ *         const path = await fn.fnameescape(denops, cursorItem.value);
+ *         if (signal?.aborted) return;
+ *         await denops.cmd(`vsplit ${path}`);
+ *       } catch (err) {
+ *         // Use `console.debug()` to show error only when the Denops is in debug mode.
+ *         console.debug(`[fall] Failed to perform 'vsplit ${path}'`)
+ *       }
+ *     },
+ *   };
+ * };
+ * ```
+ * @module
+ */
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 
 import type { Promish } from "./_common.ts";
@@ -12,80 +40,53 @@ export interface ActionParams {
   cursorItem?: ActionItem;
 
   /**
-   * The items that are currently selected.
+   * The items that are selected.
    */
   selectedItems: ActionItem[];
 
   /**
-   * The items that processed (filtered, sorted, modified).
+   * The items that are available (not filtered).
    */
-  processedItems: ActionItem[];
+  availableItems: ActionItem[];
 }
 
 /**
- * The action interface.
+ * Action is responsible for processing specified items within the picker.
  *
- * Actions are responsible for processing selected items within the picker.
- * They are applied to either the selected items or the cursor item if no items are selected.
- *
- * Action developers must implement this interface and export the `getAction` function
- * from the module that satisfies the `ActionModule` interface.
- *
- * ```typescript
- * import type { Action } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
- * import * as fn from "https://deno.land/x/denops_std/function/mod.ts";
- *
- * export function getAction(): Action {
- *   return {
- *     invoke: async (denops, { cursorItem }, { signal }) => {
- *       if (signal?.aborted) return;
- *       if (cursorItem == undefined) {
- *         return;
- *       }
- *       // Open the cursorItem.value with `vsplit`
- *       try {
- *         const path = await fn.fnameescape(denops, cursorItem.value);
- *         if (signal?.aborted) return;
- *         await denops.cmd(`vsplit ${path}`);
- *       } catch {
- *         // Fail silently to avoid interrupting the user's operation
- *       }
- *     },
- *   };
- * }
- * ```
+ * The action is applied to cursor item, selected items, or available items.
  */
 export interface Action {
   /**
-   * Description of the action.
+   * Description of the extension.
    */
   readonly description?: string;
 
   /**
-   * Invoke the action on the specified items.
+   * Trigger the action on specified items.
    *
    * This method is called when the user triggers the action.
+   *
    * It should return `true` if the picker needs to continue running.
    *
-   * @param denops The Denops instance.
    * @param params The action parameters.
    * @param options.signal The signal to abort the action.
    * @returns `true` if the picker needs to continue running.
    */
-  invoke: (
-    denops: Denops,
+  trigger: (
     params: ActionParams,
     options: { signal?: AbortSignal },
-  ) => Promish<boolean | void>;
+  ) => Promish<void | boolean>;
 }
 
-export interface ActionModule {
-  /**
-   * Get the action instance.
-   *
-   * This method is called during action registration.
-   *
-   * @param options The options provided during registration.
-   */
-  getAction: (options: Record<string, unknown>) => Action;
-}
+/**
+ * Get the action instance.
+ *
+ * This function is called when the picker is started.
+ *
+ * @param denops The Denops instance.
+ * @param options The options of the extension.
+ */
+export type GetAction = (
+  denops: Denops,
+  options: Record<string, unknown>,
+) => Promish<Action>;

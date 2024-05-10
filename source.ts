@@ -1,3 +1,24 @@
+/**
+ * Extension developers must implement and export `getSource` function to create an extension.
+ *
+ * ```typescript
+ * import type { GetSource } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ *
+ * export const getSource: GetSource = (_denops, _options) => {
+ *   return {
+ *     stream() {
+ *       // Return a static list of items as a ReadableStream
+ *       return ReadableStream.from([
+ *         { value: "item1" },
+ *         { value: "item2" },
+ *         { value: "item3" },
+ *       ]);
+ *     },
+ *   };
+ * };
+ * ```
+ * @module
+ */
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 
 import type { FlatType, Promish } from "./_common.ts";
@@ -8,34 +29,24 @@ export type SourceItem = FlatType<
   & Partial<Pick<Item, "detail">>
 >;
 
+export interface SourceParams {
+  /**
+   * The cmdline argument passed to the picker.
+   *
+   * For example, if user starts a picker with `Fall line -v ./README.md`, the `line` source
+   * will be invoked with the cmdline `-v ./README.md`.
+   */
+  cmdline: string;
+}
+
 /**
- * The source interface.
+ * Source is a provider of items for the picker.
  *
- * The Source is a provider of items for the picker.
- *
- * Source developers must implement this interface and export the `getSource` function
- * from the module that satisfies the `SourceModule` interface.
- *
- * ```typescript
- * import type { Source } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
- *
- * export function getSource(options: Record<string, unknown>): Source {
- *   return {
- *     getStream: (denops, _cmdline) => {
- *       // Return a static list of items as a ReadableStream
- *       return ReadableStream.from([
- *         { value: "item1" },
- *         { value: "item2" },
- *         { value: "item3" },
- *       ]);
- *     },
- *   };
- * }
- * ```
+ * The source is invoked when the picker is started.
  */
 export interface Source {
   /**
-   * Description of the source.
+   * Description of the extension.
    */
   readonly description?: string;
 
@@ -46,12 +57,10 @@ export interface Source {
    * The returned stream is used to retrieve items in the background.
    * If the method returns `undefined`, the picker is canceled.
    *
-   * @param denops The Denops instance.
-   * @param cmdline The arguments passed to the picker.
+   * @param params The source parameters.
    */
-  getStream: (
-    denops: Denops,
-    cmdline: string,
+  stream: (
+    params: SourceParams,
   ) => Promish<ReadableStream<SourceItem> | undefined>;
 
   /**
@@ -59,26 +68,26 @@ export interface Source {
    *
    * This method is called when the user try to complete source arguments.
    *
-   * @param denops The Denops instance.
    * @param arglead The leading string of the argument.
    * @param cmdline The whole command line.
    * @param cursorpos The cursor position in the command line.
    */
-  getCompletion?: (
-    denops: Denops,
+  complete?: (
     arglead: string,
     cmdline: string,
     cursorpos: number,
   ) => Promish<string[]>;
 }
 
-export interface SourceModule {
-  /**
-   * Get the source instance.
-   *
-   * This method is called during source registration.
-   *
-   * @param options The options provided during registration. Should be applied globally.
-   */
-  getSource: (options: Record<string, unknown>) => Source;
-}
+/**
+ * Get the source instance.
+ *
+ * This function is called when the picker is started.
+ *
+ * @param denops The Denops instance.
+ * @param options The options of the extension.
+ */
+export type GetSource = (
+  denops: Denops,
+  options: Record<string, unknown>,
+) => Promish<Source>;

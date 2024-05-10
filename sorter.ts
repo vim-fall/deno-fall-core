@@ -1,34 +1,49 @@
+/**
+ * Extension developers must implement and export `getSorter` function to create an extension.
+ *
+ * ```typescript
+ * import type { GetSorter } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
+ *
+ * export const getSorter: GetSorter = (_denops, _options) => {
+ *   return {
+ *     sort({ items }, { signal }) {
+ *       if (signal?.aborted) return items;
+ *
+ *       // Sort items in lexicographical order in-place
+ *       return items.toSorted((a, b) => a.value.localeCompare(b.value));
+ *     },
+ *   };
+ * };
+ * ```
+ * @module
+ */
 import type { Denops } from "https://deno.land/x/denops_std@v6.3.0/mod.ts";
 
 import type { Promish } from "./_common.ts";
 import type { Item } from "./item.ts";
 
+export type { Item };
+
+export interface SorterParams {
+  /**
+   * The query that user has input.
+   */
+  query: string;
+
+  /**
+   * The filtered items.
+   */
+  items: Item[];
+}
+
 /**
- * The sorter interface.
+ * Sorter is responsible for sorting the items in the picker.
  *
- * The Sorter is responsible for sorting the items in the picker.
- *
- * Sorter developers must implement this interface and export the `getSorter` function
- * from the module that satisfies the `SorterModule` interface.
- *
- * ```typescript
- * import type { Sorter } from "https://deno.land/x/fall_core@$MODULE_VERSION/mod.ts";
- *
- * export function getSorter(): Sorter {
- *   return {
- *     sort: (_denops, items, { signal }) => {
- *       if (signal?.aborted) return items;
- *       // Sort items in lexicographical order in-place
- *       items.sort((a, b) => a.value.localeCompare(b.value));
- *       return items;
- *     },
- *   };
- * }
- * ```
+ * The sorter is applied to the filtered items.
  */
 export interface Sorter {
   /**
-   * Description of the sorter.
+   * Description of the extension.
    */
   readonly description?: string;
 
@@ -38,24 +53,24 @@ export interface Sorter {
    * This method is called when the picker filtered the items on the selector.
    * Note that all filtered items are passed to the method.
    *
-   * @param denops The Denops instance.
-   * @param items The items to be sorted.
+   * @param params The sorter parameters.
    * @param options.signal The signal to abort the sorting.
    */
   sort: (
-    denops: Denops,
-    items: Item[],
+    params: SorterParams,
     options: { signal?: AbortSignal },
   ) => Promish<Item[]>;
 }
 
-export interface SorterModule {
-  /**
-   * Get the sorter instance.
-   *
-   * This method is called during sorter registration.
-   *
-   * @param options The options provided during registration.
-   */
-  getSorter: (options: Record<string, unknown>) => Sorter;
-}
+/**
+ * Get the sorter instance.
+ *
+ * This function is called when the picker is started.
+ *
+ * @param denops The Denops instance.
+ * @param options The options of the extension.
+ */
+export type GetSorter = (
+  denops: Denops,
+  options: Record<string, unknown>,
+) => Promish<Sorter>;
