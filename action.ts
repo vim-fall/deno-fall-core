@@ -18,7 +18,7 @@
  *         await denops.cmd(`vsplit ${path}`);
  *       } catch (err) {
  *         // Use `console.debug()` to show error only when the Denops is in debug mode.
- *         console.debug(`[fall] Failed to perform 'vsplit ${path}'`)
+ *         console.debug(`[fall] Failed to perform 'vsplit': ${err.message ?? err}`);
  *       }
  *     },
  *   };
