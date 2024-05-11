@@ -26,7 +26,7 @@ import type { Item } from "./item.ts";
 
 export type SourceItem = FlatType<
   & Pick<Item, "value" | "label">
-  & Partial<Pick<Item, "detail">>
+  & Partial<Pick<Item, "detail" | "decorations">>
 >;
 
 export interface SourceParams {
