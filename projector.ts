@@ -57,7 +57,7 @@ export interface Projector {
   readonly project: (
     params: ProjectorParams,
     options: { signal?: AbortSignal },
-  ) => Promish<Item[]>;
+  ) => Promish<readonly Item[]>;
 }
 
 /**

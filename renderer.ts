@@ -63,7 +63,7 @@ export interface Renderer {
   readonly render: (
     params: RendererParams,
     options: { signal?: AbortSignal },
-  ) => Promish<RendererItem[]>;
+  ) => Promish<readonly RendererItem[]>;
 }
 
 /**
