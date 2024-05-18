@@ -8,19 +8,9 @@
  * export const getPreviewer: GetPreviewer = (denops, _options) => {
  *   return {
  *     async preview({ item, bufnr }, { signal }) {
- *       if (signal?.aborted) return;
- *
- *       // Write the file content of the item.value to the buffer
- *       try {
  *         const content = await Deno.readTextFile(item.value);
- *         if (signal?.aborted) return;
+ *         signal?.throwIfAborted();
  *         await buffer.replace(denops, bufnr, content.split("\n"));
- *       } catch {
- *         // Use `console.debug()` to show error only when the Denops is in debug mode.
- *         console.debug(`[fall] Failed to preview '${JSON.stringify(item)}'`)
- *         // Try next previewer if available
- *         return true;
- *       }
  *     },
  *   };
  * };
@@ -37,17 +27,17 @@ export interface PreviewerParams {
   /**
    * The item going to be previewd.
    */
-  item: PreviewerItem;
+  readonly item: PreviewerItem;
 
   /**
    * The buffer number for previewing the item.
    */
-  bufnr: number;
+  readonly bufnr: number;
 
   /**
    * The window ID for previewing the item.
    */
-  winid: number;
+  readonly winid: number;
 }
 
 /**
@@ -75,7 +65,7 @@ export interface Previewer {
    * @param options.signal The signal to abort the preview.
    * @return `true` if the picker needs to try next previewer.
    */
-  preview: (
+  readonly preview: (
     params: PreviewerParams,
     options: { signal?: AbortSignal },
   ) => Promish<void | boolean>;
@@ -91,5 +81,5 @@ export interface Previewer {
  */
 export type GetPreviewer = (
   denops: Denops,
-  options: Record<string, unknown>,
+  options: Readonly<Record<string, unknown>>,
 ) => Promish<Previewer>;

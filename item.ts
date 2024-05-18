@@ -11,12 +11,12 @@ export interface Item {
    * This identifier distinguishes the item in the picker.
    * Developers must preserve this value as-is.
    */
-  id: unknown;
+  readonly id: unknown;
 
   /**
    * The value of the item.
    */
-  value: string;
+  readonly value: string;
 
   /**
    * The display label of the item.
@@ -24,7 +24,7 @@ export interface Item {
    * This label is used to display the item in the picker.
    * If not specified, `value` is used.
    */
-  label?: string;
+  readonly label?: string;
 
   /**
    * The detailed information of the item.
@@ -33,7 +33,7 @@ export interface Item {
    * Developers should verify if the `detail` has the expected structure before using it
    * and ignore the item if it does not.
    */
-  detail: Record<string, unknown>;
+  readonly detail: Readonly<Record<string, unknown>>;
 
   /**
    * Decorations to be applied to the line of the item in the picker.
@@ -44,5 +44,5 @@ export interface Item {
    * Note: If `highlight` is not specified, the picker will use the default highlight group
    * for highlighting the matched part.
    */
-  decorations: ItemDecoration[];
+  readonly decorations: readonly ItemDecoration[];
 }

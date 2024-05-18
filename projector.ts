@@ -6,10 +6,7 @@
  *
  * export const getProjector: GetProjector = (_denops, _options) => {
  *   return {
- *     project({ items }, { signal }) {
- *       if (signal?.aborted) return items;
- *
- *       // Sort items in lexicographical order in-place
+ *     project({ items }) {
  *       return items.toSorted((a, b) => a.value.localeCompare(b.value));
  *     },
  *   };
@@ -28,12 +25,12 @@ export interface ProjectorParams {
   /**
    * The query that user has input.
    */
-  query: string;
+  readonly query: string;
 
   /**
    * The transformed/projected items.
    */
-  items: Item[];
+  readonly items: readonly Item[];
 }
 
 /**
@@ -57,7 +54,7 @@ export interface Projector {
    * @param params The sorter parameters.
    * @param options.signal The signal to abort the projection.
    */
-  project: (
+  readonly project: (
     params: ProjectorParams,
     options: { signal?: AbortSignal },
   ) => Promish<Item[]>;
@@ -73,5 +70,5 @@ export interface Projector {
  */
 export type GetProjector = (
   denops: Denops,
-  options: Record<string, unknown>,
+  options: Readonly<Record<string, unknown>>,
 ) => Promish<Projector>;

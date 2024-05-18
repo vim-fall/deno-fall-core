@@ -6,9 +6,7 @@
  *
  * export const getRenderer: GetRenderer = (_denops, _options) => {
  *   return {
- *     render({ items }, { signal }) {
- *       if (signal?.aborted) return items;
- *
+ *     render({ items }) {
  *       // Use UPPER CASE for the label
  *       return items.map((v) => ({
  *         ...v,
@@ -34,12 +32,12 @@ export interface RendererParams {
   /**
    * The items to be displayed.
    */
-  items: RendererItem[];
+  readonly items: readonly RendererItem[];
 
   /**
    * The selector window display width.
    */
-  width: number;
+  readonly width: number;
 }
 
 /**
@@ -62,7 +60,7 @@ export interface Renderer {
    * @param params The renderer parameters.
    * @param options.signal The signal to abort the rendering.
    */
-  render: (
+  readonly render: (
     params: RendererParams,
     options: { signal?: AbortSignal },
   ) => Promish<RendererItem[]>;
@@ -78,5 +76,5 @@ export interface Renderer {
  */
 export type GetRenderer = (
   denops: Denops,
-  options: Record<string, unknown>,
+  options: Readonly<Record<string, unknown>>,
 ) => Promish<Renderer>;

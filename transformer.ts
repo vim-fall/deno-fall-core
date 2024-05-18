@@ -6,10 +6,7 @@
  *
  * export const getTransformer: GetTransformer = (_denops, _options) => {
  *   return {
- *     transform({ query }, { signal }) {
- *       if (signal?.aborted) return undefined;
- *
- *       // Return the transform stream to filter the items
+ *     transform({ query }) {
  *       return new TransformStream({
  *         async transform(chunk, controller) {
  *           if (chunk.value.includes(query)) {
@@ -34,7 +31,7 @@ export interface TransformerParams {
   /**
    * The query that user has input.
    */
-  query: string;
+  readonly query: string;
 }
 
 /**
@@ -59,7 +56,7 @@ export interface Transformer {
    * @param params The transformer parameters.
    * @param options.signal The signal to abort the transformer.
    */
-  transform: (
+  readonly transform: (
     params: TransformerParams,
     options: { signal?: AbortSignal },
   ) => Promish<TransformStream<Item, Item> | undefined>;
@@ -75,5 +72,5 @@ export interface Transformer {
  */
 export type GetTransformer = (
   denops: Denops,
-  options: Record<string, unknown>,
+  options: Readonly<Record<string, unknown>>,
 ) => Promish<Transformer>;

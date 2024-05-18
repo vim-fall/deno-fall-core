@@ -36,7 +36,7 @@ export interface SourceParams {
    * For example, if user starts a picker with `Fall line -v ./README.md`, the `line` source
    * will be invoked with the cmdline `-v ./README.md`.
    */
-  cmdline: string;
+  readonly cmdline: string;
 }
 
 /**
@@ -59,7 +59,7 @@ export interface Source {
    *
    * @param params The source parameters.
    */
-  stream: (
+  readonly stream: (
     params: SourceParams,
   ) => Promish<ReadableStream<SourceItem> | undefined>;
 
@@ -72,7 +72,7 @@ export interface Source {
    * @param cmdline The whole command line.
    * @param cursorpos The cursor position in the command line.
    */
-  complete?: (
+  readonly complete?: (
     arglead: string,
     cmdline: string,
     cursorpos: number,
@@ -89,5 +89,5 @@ export interface Source {
  */
 export type GetSource = (
   denops: Denops,
-  options: Record<string, unknown>,
+  options: Readonly<Record<string, unknown>>,
 ) => Promish<Source>;

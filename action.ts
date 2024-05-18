@@ -8,18 +8,12 @@
  * export const getAction: GetAction = (denops, _options) => {
  *   return {
  *     async trigger({ cursorItem }, { signal }) {
- *       if (signal?.aborted) return;
- *       if (cursorItem == undefined) return;
+ *       if (!cursorItem) return;
  *
  *       // Open the cursorItem.value with `vsplit`
- *       try {
- *         const path = await fn.fnameescape(denops, cursorItem.value);
- *         if (signal?.aborted) return;
- *         await denops.cmd(`vsplit ${path}`);
- *       } catch (err) {
- *         // Use `console.debug()` to show error only when the Denops is in debug mode.
- *         console.debug(`[fall] Failed to perform 'vsplit': ${err.message ?? err}`);
- *       }
+ *       const path = await fn.fnameescape(denops, cursorItem.value);
+ *       signal?.throwIfAborted();
+ *       await denops.cmd(`vsplit ${path}`);
  *     },
  *   };
  * };
@@ -37,23 +31,23 @@ export interface ActionParams {
   /**
    * The item under the cursor.
    */
-  cursorItem?: ActionItem;
+  readonly cursorItem?: ActionItem;
 
   /**
    * The items that are selected.
    */
-  selectedItems: ActionItem[];
+  readonly selectedItems: readonly ActionItem[];
 
   /**
-   * The items that are available (not filtered).
+   * The items that are processed.
    */
-  availableItems: ActionItem[];
+  readonly processedItems: readonly ActionItem[];
 }
 
 /**
  * Action is responsible for processing specified items within the picker.
  *
- * The action is applied to cursor item, selected items, or available items.
+ * The action is applied to cursor item, selected items, or processed items.
  */
 export interface Action {
   /**
@@ -72,7 +66,7 @@ export interface Action {
    * @param options.signal The signal to abort the action.
    * @returns `true` if the picker needs to continue running.
    */
-  trigger: (
+  readonly trigger: (
     params: ActionParams,
     options: { signal?: AbortSignal },
   ) => Promish<void | boolean>;
@@ -88,5 +82,5 @@ export interface Action {
  */
 export type GetAction = (
   denops: Denops,
-  options: Record<string, unknown>,
+  options: Readonly<Record<string, unknown>>,
 ) => Promish<Action>;
