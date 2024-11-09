@@ -28,11 +28,15 @@
   "tasks": {
     "check": "deno check ./**/*.ts",
     "test": "deno test -A --parallel --shuffle --doc",
+    "test:coverage": "deno task test --coverage=.coverage",
+    "coverage": "deno coverage .coverage --exclude=testdata/",
     "update": "deno run --allow-env --allow-read --allow-write=. --allow-run=git,deno --allow-net=deno.land,jsr.io,registry.npmjs.org jsr:@molt/cli ./**/*.ts",
     "update:write": "deno task -q update --write",
     "update:commit": "deno task -q update --commit --prefix :package: --pre-commit=fmt,lint"
   },
   "imports": {
-    "@denops/std": "jsr:@denops/std@^7.3.0"
+    "@denops/std": "jsr:@denops/std@^7.3.0",
+    "@denops/test": "jsr:@denops/test@^3.0.4",
+    "@std/testing": "jsr:@std/testing@^1.0.4"
   }
 }
