@@ -19,6 +19,8 @@ export type MatchParams<T> = {
  * Matcher that filters items based on user input.
  */
 export type Matcher<T> = {
+  __phantom?: T; // This is required for type constraint.
+
   /**
    * Matches items against the provided query.
    *
