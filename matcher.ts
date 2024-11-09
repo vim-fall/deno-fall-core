@@ -28,11 +28,10 @@ export type Matcher<T> = {
    * @returns An async iterator over matched `IdItem` elements.
    */
   match<
-    M extends MatchParams<T>,
-    V extends M extends MatchParams<infer V> ? V : never,
+    V extends T,
   >(
     denops: Denops,
-    params: M,
+    params: MatchParams<V>,
     options: { signal?: AbortSignal },
   ): AsyncIterableIterator<IdItem<V>>;
 };
