@@ -1,8 +1,10 @@
 import type { Denops } from "@denops/std";
-
 import type { Promish } from "./_typeutil.ts";
 import type { IdItem, PreviewItem } from "./item.ts";
 
+/**
+ * Parameters for previewing an item.
+ */
 export type PreviewParams<T> = {
   /**
    * The item to preview.
@@ -10,13 +12,17 @@ export type PreviewParams<T> = {
   readonly item: IdItem<T>;
 };
 
+/**
+ * Previewer that generates a preview for an item.
+ */
 export type Previewer<T> = {
   /**
-   * Preview an item.
+   * Generates a preview for the specified item.
    *
-   * @param denops The Denops instance.
-   * @param params The parameters to preview an item.
-   * @param options The options for previewing.
+   * @param denops - The Denops instance.
+   * @param params - Parameters specifying the item to preview.
+   * @param options - Additional options, including an abort signal.
+   * @returns A `PreviewItem` or `void` if no preview is available.
    */
   preview(
     denops: Denops,

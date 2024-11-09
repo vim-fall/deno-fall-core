@@ -3,29 +3,39 @@ import type { Denops } from "@denops/std";
 import type { Promish } from "./_typeutil.ts";
 import type { IdItem } from "./item.ts";
 
+/**
+ * Parameters for invoking an action.
+ */
 export type InvokeParams<T> = {
   /**
-   * The item under the cursor.
+   * The item currently under the cursor.
+   *
+   * If `filteredItems` is empty, this will be `undefined`.
    */
   readonly item?: IdItem<T> | undefined;
   /**
-   * The selected items.
+   * The items selected by the user.
+   *
+   * If no items were selected, this will be `undefined`.
    */
   readonly selectedItems?: readonly IdItem<T>[] | undefined;
   /**
-   * The filtered items.
+   * The items after filtering.
    */
   readonly filteredItems: readonly IdItem<T>[];
 };
 
+/**
+ * An action that can be invoked from the picker.
+ */
 export type Action<T> = {
   /**
    * Invoke the action.
    *
-   * @param denops The Denops instance.
-   * @param params The parameters for invoking the action.
-   * @param options The options.
-   * @returns If the picker should not be closed, return `true`.
+   * @param denops - The Denops instance.
+   * @param params - Parameters for the action invocation.
+   * @param options - Additional options.
+   * @returns If the picker should remain open, return `true`.
    */
   invoke(
     denops: Denops,

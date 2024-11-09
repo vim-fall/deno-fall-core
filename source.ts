@@ -1,22 +1,27 @@
 import type { Denops } from "@denops/std";
-
 import type { IdItem } from "./item.ts";
 
+/**
+ * Parameters for collecting items.
+ */
 export type CollectParams = {
   /**
-   * The arguments passed to the picker.
+   * Arguments passed to the picker.
    */
   readonly args: readonly string[];
 };
 
+/**
+ * Source that collects items.
+ */
 export type Source<T> = {
   /**
-   * Collect items.
+   * Collects items.
    *
-   * @param denops The Denops instance.
-   * @param params The parameters to collect items.
-   * @param options The options.
-   * @param options.signal The signal to cancel the operation.
+   * @param denops - The Denops instance.
+   * @param params - Parameters specifying the items to collect.
+   * @param options - Additional options, including an abort signal.
+   * @returns An async iterator over the collected items.
    */
   collect(
     denops: Denops,

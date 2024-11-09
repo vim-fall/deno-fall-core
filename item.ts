@@ -1,98 +1,106 @@
+/**
+ * An item processed by the picker.
+ */
 export type IdItem<T> = {
   /**
-   * The unique identifier of the item.
+   * Unique identifier for the item.
    */
-  readonly id: number;
+  readonly id: unknown;
 
   /**
-   * The value of the item.
+   * Item's primary value.
    */
   readonly value: string;
 
   /**
-   * The detailed information of the item.
+   * Detailed information about the item.
    *
-   * This information is used in further processing.
-   * Developers should verify if the `detail` has the expected structure before using it
-   * and ignore the item if it does not.
+   * Used for further processing.
    */
   readonly detail: T;
 
   /**
-   * The display label of the item.
+   * Display label for the item in the picker.
    *
-   * This label is used to display the item in the picker.
-   * If not specified, `value` is used.
+   * If not specified, `value` is used as the label.
    */
   label?: string;
 
   /**
-   * Decorations to be applied to the line of the item in the picker.
+   * Decorations applied to the item's line in the picker.
    *
-   * These decorations highlight the matched part of the item, or are used for better visualization.
-   * Developers should respect existing `decorations` and extend them.
+   * These decorations highlight matched parts or improve visualization.
+   * Developers should respect and extend existing `decorations`.
    *
-   * Note: If `highlight` is not specified, the picker will use the default highlight group
-   * for highlighting the matched part.
+   * Note: If `highlight` is unspecified, the picker uses a default highlight
+   * group to emphasize matched parts.
    */
   decorations?: readonly ItemDecoration[];
 };
 
+/**
+ * An item displayed in the picker.
+ */
 export type DisplayItem<T> = IdItem<T> & {
   /**
-   * The display label of the item.
+   * Display label for the item in the picker.
    *
-   * This label is used to display the item in the picker.
-   * If not specified, `value` is used.
+   * If unspecified, `value` is used as the label.
    */
   label: string;
 
   /**
-   * Decorations to be applied to the line of the item in the picker.
+   * Decorations applied to the item's line in the picker.
    *
-   * These decorations highlight the matched part of the item, or are used for better visualization.
-   * Developers should respect existing `decorations` and extend them.
+   * These decorations highlight matched parts or improve visualization.
+   * Developers should respect and extend existing `decorations`.
    *
-   * Note: If `highlight` is not specified, the picker will use the default highlight group
-   * for highlighting the matched part.
+   * Note: If `highlight` is unspecified, the picker uses a default highlight
+   * group to emphasize matched parts.
    */
   decorations: readonly ItemDecoration[];
 };
 
+/**
+ * An item used for previewing content in the picker.
+ */
 export type PreviewItem = {
   /**
-   * The content to preview.
+   * Content to preview.
    */
   readonly content: string[];
   /**
-   * The line number to jump to.
+   * Line number to jump to.
    */
   readonly line?: number;
   /**
-   * The column number to jump to.
+   * Column number to jump to.
    */
   readonly column?: number;
   /**
-   * The filetype used for highlighting.
+   * Filetype for syntax highlighting.
    */
   readonly filetype?: string;
   /**
-   * The filename used in the buffer name.
+   * Filename displayed in the buffer name.
    */
   readonly filename?: string;
 };
 
+/**
+ * Decoration applied to an item's line in the picker.
+ */
 export type ItemDecoration = {
   /**
-   * Column number (bytes)
+   * Column number (in bytes).
    */
   readonly column: number;
   /**
-   * Length (bytes)
+   * Length of the decoration (in bytes).
    */
   readonly length: number;
   /**
-   * Highlight name
+   * Name of the highlight group.
    */
   readonly highlight?: string;
 };

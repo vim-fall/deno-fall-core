@@ -1,17 +1,20 @@
 /**
- * Theme interface.
+ * Theme interface, defining the border and divider characters.
  */
 export type Theme = {
   /**
-   * The border characters.
+   * Characters used for the border.
    */
   border: Border;
   /**
-   * The divider characters.
+   * Characters used for dividers.
    */
   divider: Divider;
 };
 
+/**
+ * Index mapping for border positions.
+ */
 export const BorderIndex = {
   TopLeft: 0,
   Top: 1,
@@ -25,6 +28,9 @@ export const BorderIndex = {
 
 export type BorderIndex = typeof BorderIndex[keyof typeof BorderIndex];
 
+/**
+ * Characters used to create borders.
+ */
 export type Border = readonly [
   topleft: string,
   top: string,
@@ -36,9 +42,12 @@ export type Border = readonly [
   left: string,
 ];
 
+/**
+ * Index mapping for divider positions.
+ */
 export const DividerIndex = {
   Left: 0,
-  Horizonal: 1,
+  Horizontal: 1,
   Right: 2,
   Top: 3,
   Vertical: 4,
@@ -47,9 +56,12 @@ export const DividerIndex = {
 
 export type DividerIndex = typeof DividerIndex[keyof typeof DividerIndex];
 
+/**
+ * Characters used to create dividers.
+ */
 export type Divider = readonly [
   left: string,
-  horizonal: string,
+  horizontal: string,
   right: string,
   top: string,
   vertical: string,

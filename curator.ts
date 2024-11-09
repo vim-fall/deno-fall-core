@@ -2,25 +2,33 @@ import type { Denops } from "@denops/std";
 
 import type { IdItem } from "./item.ts";
 
+/**
+ * Parameters for curating items.
+ */
 export type CurateParams = {
   /**
-   * The arguments passed to the picker.
+   * Arguments passed to the picker.
    */
   readonly args: readonly string[];
   /**
-   * User input query.
+   * User input query for filtering items.
    */
   readonly query: string;
 };
 
+/**
+ * Curator that collects and filters items based on user input.
+ *
+ * Acts as an interactive `Source`.
+ */
 export type Curator<T> = {
   /**
-   * Curate items.
+   * Curates items based on the provided parameters.
    *
-   * @param denops The Denops instance.
-   * @param params The parameters to curate items.
-   * @param options The options.
-   * @param options.signal The signal to cancel the operation.
+   * @param denops - The Denops instance.
+   * @param params - Parameters for curating items.
+   * @param options - Optional settings, including an abort signal.
+   * @returns An async iterator over curated `IdItem` elements.
    */
   curate(
     denops: Denops,
