@@ -8,6 +8,7 @@ Deno.test("Action", async (t) => {
   const action: Action<{ a: string }> = {
     invoke: () => {},
   };
+
   await t.step("passed type is equal to the type restriction", () => {
     const items = action.invoke(
       denops,
@@ -50,4 +51,25 @@ Deno.test("Action", async (t) => {
       >
     >(true);
   });
+
+  await t.step(
+    "check if the type constraint correctly triggers the type checking",
+    () => {
+      const action1: Action<{ a: string }> = {
+        invoke: () => {},
+      };
+      const action2: Action<{ b: string }> = {
+        invoke: () => {},
+      };
+      const action3: Action<{ c: string }> = {
+        invoke: () => {},
+      };
+      function strictFunction<T extends { a: string }>(_: Action<T>) {}
+      strictFunction(action1);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(action2);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(action3);
+    },
+  );
 });

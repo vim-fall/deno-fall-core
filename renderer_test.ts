@@ -51,4 +51,25 @@ Deno.test("Renderer", async (t) => {
       >
     >(true);
   });
+
+  await t.step(
+    "check if the type constraint correctly triggers the type checking",
+    () => {
+      const renderer1: Renderer<{ a: string }> = {
+        render: () => {},
+      };
+      const renderer2: Renderer<{ b: string }> = {
+        render: () => {},
+      };
+      const renderer3: Renderer<{ c: string }> = {
+        render: () => {},
+      };
+      function strictFunction<T extends { a: string }>(_: Renderer<T>) {}
+      strictFunction(renderer1);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(renderer2);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(renderer3);
+    },
+  );
 });

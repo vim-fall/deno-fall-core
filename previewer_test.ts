@@ -52,4 +52,25 @@ Deno.test("Previewer", async (t) => {
       >
     >(true);
   });
+
+  await t.step(
+    "check if the type constraint correctly triggers the type checking",
+    () => {
+      const previewer1: Previewer<{ a: string }> = {
+        preview: () => {},
+      };
+      const previewer2: Previewer<{ b: string }> = {
+        preview: () => {},
+      };
+      const previewer3: Previewer<{ c: string }> = {
+        preview: () => {},
+      };
+      function strictFunction<T extends { a: string }>(_: Previewer<T>) {}
+      strictFunction(previewer1);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(previewer2);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(previewer3);
+    },
+  );
 });

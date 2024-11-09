@@ -51,4 +51,25 @@ Deno.test("Matcher", async (t) => {
       >
     >(true);
   });
+
+  await t.step(
+    "check if the type constraint correctly triggers the type checking",
+    () => {
+      const matcher1: Matcher<{ a: string }> = {
+        match: async function* () {},
+      };
+      const matcher2: Matcher<{ b: string }> = {
+        match: async function* () {},
+      };
+      const matcher3: Matcher<{ c: string }> = {
+        match: async function* () {},
+      };
+      function strictFunction<T extends { a: string }>(_: Matcher<T>) {}
+      strictFunction(matcher1);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(matcher2);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(matcher3);
+    },
+  );
 });

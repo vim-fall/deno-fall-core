@@ -51,4 +51,25 @@ Deno.test("Sorter", async (t) => {
       >
     >(true);
   });
+
+  await t.step(
+    "check if the type constraint correctly triggers the type checking",
+    () => {
+      const sorter1: Sorter<{ a: string }> = {
+        sort: () => {},
+      };
+      const sorter2: Sorter<{ b: string }> = {
+        sort: () => {},
+      };
+      const sorter3: Sorter<{ c: string }> = {
+        sort: () => {},
+      };
+      function strictFunction<T extends { a: string }>(_: Sorter<T>) {}
+      strictFunction(sorter1);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(sorter2);
+      // @ts-expect-error: 'a' is missing
+      strictFunction(sorter3);
+    },
+  );
 });
