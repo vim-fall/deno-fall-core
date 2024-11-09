@@ -1,4 +1,6 @@
 import type { Denops } from "@denops/std";
+
+import type { FlatType } from "./_typeutil.ts";
 import type { IdItem } from "./item.ts";
 
 /**
@@ -8,7 +10,7 @@ export type ProjectParams<T> = {
   /**
    * Async iterable of items to project.
    */
-  readonly items: AsyncIterable<IdItem<T>>;
+  readonly items: AsyncIterable<IdItem<FlatType<T>>>;
 };
 
 /**
@@ -21,7 +23,7 @@ export type ProjectParams<T> = {
  *
  * In built-in extensions, projectors are categorized into the two types above.
  */
-export type Projector<T, U = T> = {
+export type Projector<T, U = FlatType<T>> = {
   /**
    * Projects items for further processing.
    *
@@ -32,7 +34,7 @@ export type Projector<T, U = T> = {
    */
   project(
     denops: Denops,
-    params: ProjectParams<T>,
+    params: ProjectParams<FlatType<T>>,
     options: { signal?: AbortSignal },
-  ): AsyncIterableIterator<IdItem<U>>;
+  ): AsyncIterableIterator<IdItem<FlatType<U>>>;
 };

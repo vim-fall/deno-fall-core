@@ -1,5 +1,6 @@
 import type { Denops } from "@denops/std";
-import type { Promish } from "./_typeutil.ts";
+
+import type { FlatType, Promish } from "./_typeutil.ts";
 import type { IdItem } from "./item.ts";
 
 /**
@@ -9,7 +10,7 @@ export type SortParams<T> = {
   /**
    * Array of items to sort.
    */
-  readonly items: IdItem<T>[];
+  readonly items: IdItem<FlatType<T>>[];
 };
 
 /**
@@ -26,7 +27,7 @@ export type Sorter<T> = {
    */
   sort(
     denops: Denops,
-    params: SortParams<T>,
+    params: SortParams<FlatType<T>>,
     options: { signal?: AbortSignal },
   ): Promish<void>;
 };

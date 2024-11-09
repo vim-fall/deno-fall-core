@@ -1,5 +1,6 @@
 import type { Denops } from "@denops/std";
-import type { Promish } from "./_typeutil.ts";
+
+import type { FlatType, Promish } from "./_typeutil.ts";
 import type { IdItem, PreviewItem } from "./item.ts";
 
 /**
@@ -9,7 +10,7 @@ export type PreviewParams<T> = {
   /**
    * The item to preview.
    */
-  readonly item: IdItem<T>;
+  readonly item: IdItem<FlatType<T>>;
 };
 
 /**
@@ -26,7 +27,7 @@ export type Previewer<T> = {
    */
   preview(
     denops: Denops,
-    params: PreviewParams<T>,
+    params: PreviewParams<FlatType<T>>,
     options: { signal?: AbortSignal },
   ): Promish<void | PreviewItem>;
 };

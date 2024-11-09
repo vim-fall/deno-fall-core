@@ -1,6 +1,6 @@
 import type { Denops } from "@denops/std";
 
-import type { Promish } from "./_typeutil.ts";
+import type { FlatType, Promish } from "./_typeutil.ts";
 import type { IdItem } from "./item.ts";
 
 /**
@@ -12,17 +12,17 @@ export type InvokeParams<T> = {
    *
    * If `filteredItems` is empty, this will be `undefined`.
    */
-  readonly item?: IdItem<T> | undefined;
+  readonly item?: IdItem<FlatType<T>> | undefined;
   /**
    * The items selected by the user.
    *
    * If no items were selected, this will be `undefined`.
    */
-  readonly selectedItems?: readonly IdItem<T>[] | undefined;
+  readonly selectedItems?: readonly IdItem<FlatType<T>>[] | undefined;
   /**
    * The items after filtering.
    */
-  readonly filteredItems: readonly IdItem<T>[];
+  readonly filteredItems: readonly IdItem<FlatType<T>>[];
 };
 
 /**
@@ -39,7 +39,7 @@ export type Action<T> = {
    */
   invoke(
     denops: Denops,
-    params: InvokeParams<T>,
+    params: InvokeParams<FlatType<T>>,
     options: { signal?: AbortSignal },
   ): Promish<void | true>;
 };

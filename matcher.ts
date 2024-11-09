@@ -1,4 +1,6 @@
 import type { Denops } from "@denops/std";
+
+import type { FlatType } from "./_typeutil.ts";
 import type { IdItem } from "./item.ts";
 
 /**
@@ -12,7 +14,7 @@ export type MatchParams<T> = {
   /**
    * Array of items to match against the query.
    */
-  readonly items: readonly IdItem<T>[];
+  readonly items: readonly IdItem<FlatType<T>>[];
 };
 
 /**
@@ -29,7 +31,7 @@ export type Matcher<T> = {
    */
   match(
     denops: Denops,
-    params: MatchParams<T>,
+    params: MatchParams<FlatType<T>>,
     options: { signal?: AbortSignal },
-  ): AsyncIterableIterator<IdItem<T>>;
+  ): AsyncIterableIterator<IdItem<FlatType<T>>>;
 };

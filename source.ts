@@ -1,4 +1,6 @@
 import type { Denops } from "@denops/std";
+
+import type { FlatType } from "./_typeutil.ts";
 import type { IdItem } from "./item.ts";
 
 /**
@@ -27,5 +29,5 @@ export type Source<T> = {
     denops: Denops,
     params: CollectParams,
     options: { signal?: AbortSignal },
-  ): AsyncIterableIterator<IdItem<T>>;
+  ): AsyncIterableIterator<IdItem<FlatType<T>>>;
 };

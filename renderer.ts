@@ -1,5 +1,6 @@
 import type { Denops } from "@denops/std";
-import type { Promish } from "./_typeutil.ts";
+
+import type { FlatType, Promish } from "./_typeutil.ts";
 import type { DisplayItem } from "./item.ts";
 
 /**
@@ -9,7 +10,7 @@ export type RenderParams<T> = {
   /**
    * Array of items to render.
    */
-  readonly items: DisplayItem<T>[];
+  readonly items: DisplayItem<FlatType<T>>[];
 };
 
 /**
@@ -26,7 +27,7 @@ export type Renderer<T> = {
    */
   render(
     denops: Denops,
-    params: RenderParams<T>,
+    params: RenderParams<FlatType<T>>,
     options: { signal?: AbortSignal },
   ): Promish<void>;
 };

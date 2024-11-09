@@ -1,5 +1,6 @@
 import type { Denops } from "@denops/std";
 
+import type { FlatType } from "./_typeutil.ts";
 import type { IdItem } from "./item.ts";
 
 /**
@@ -34,5 +35,5 @@ export type Curator<T> = {
     denops: Denops,
     params: CurateParams,
     options: { signal?: AbortSignal },
-  ): AsyncIterableIterator<IdItem<T>>;
+  ): AsyncIterableIterator<IdItem<FlatType<T>>>;
 };
