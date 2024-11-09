@@ -27,9 +27,12 @@ export type Matcher<T> = {
    * @param options - Additional options, including an abort signal.
    * @returns An async iterator over matched `IdItem` elements.
    */
-  match(
+  match<
+    M extends MatchParams<T>,
+    V extends M extends MatchParams<infer V> ? V : never,
+  >(
     denops: Denops,
-    params: MatchParams<T>,
+    params: M,
     options: { signal?: AbortSignal },
-  ): AsyncIterableIterator<IdItem<T>>;
+  ): AsyncIterableIterator<IdItem<V>>;
 };
