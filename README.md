@@ -1,5 +1,6 @@
 # 🍂 fall-core
 
+[![Test](https://github.com/vim-fall/fall-core/actions/workflows/test.yml/badge.svg)](https://github.com/vim-fall/fall-core/actions/workflows/test.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Core types for [Fall](https://github.com/vim-fall/fall), a Vim/Neovim Fuzzy
