@@ -1,6 +1,6 @@
 import type { Denops } from "@denops/std";
 import type { Promish } from "./_typeutil.ts";
-import type { Detail, IdItem, PreviewItem } from "./item.ts";
+import type { Detail, IdItem, PreviewItem, UnitDetail } from "./item.ts";
 
 /**
  * Parameters for previewing an item.
@@ -15,7 +15,7 @@ export type PreviewParams<T extends Detail> = {
 /**
  * Previewer that generates a preview for an item.
  */
-export type Previewer<T extends Detail> = {
+export type Previewer<T extends Detail = UnitDetail> = {
   /**
    * Generates a preview for the specified item.
    *

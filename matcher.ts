@@ -1,6 +1,6 @@
 import type { Denops } from "@denops/std";
 
-import type { Detail, IdItem } from "./item.ts";
+import type { Detail, IdItem, UnitDetail } from "./item.ts";
 
 /**
  * Parameters for matching items.
@@ -19,7 +19,7 @@ export type MatchParams<T extends Detail> = {
 /**
  * Matcher that filters items based on user input.
  */
-export type Matcher<T extends Detail> = {
+export type Matcher<T extends Detail = UnitDetail> = {
   __phantom?: (_: T) => void; // This is required for type constraint.
 
   /**

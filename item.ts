@@ -4,9 +4,9 @@
 export type Detail = Record<PropertyKey, unknown>;
 
 /**
- * An empty detail attribute.
+ * An unit of Detail.
  */
-export type EmptyDetail = Record<never, never>;
+export type UnitDetail = Record<never, never>;
 
 /**
  * An item processed by the picker.

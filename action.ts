@@ -1,7 +1,7 @@
 import type { Denops } from "@denops/std";
 
 import type { Promish } from "./_typeutil.ts";
-import type { Detail, IdItem } from "./item.ts";
+import type { Detail, IdItem, UnitDetail } from "./item.ts";
 
 /**
  * Parameters for invoking an action.
@@ -28,7 +28,7 @@ export type InvokeParams<T extends Detail> = {
 /**
  * An action that can be invoked from the picker.
  */
-export type Action<T extends Detail> = {
+export type Action<T extends Detail = UnitDetail> = {
   /**
    * Invoke the action.
    *
