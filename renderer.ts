@@ -1,11 +1,11 @@
 import type { Denops } from "@denops/std";
 import type { Promish } from "./_typeutil.ts";
-import type { DisplayItem } from "./item.ts";
+import type { Detail, DisplayItem } from "./item.ts";
 
 /**
  * Parameters for rendering items.
  */
-export type RenderParams<T> = {
+export type RenderParams<T extends Detail> = {
   /**
    * Array of items to render.
    */
@@ -15,7 +15,7 @@ export type RenderParams<T> = {
 /**
  * Renderer responsible for rendering items.
  */
-export type Renderer<T> = {
+export type Renderer<T extends Detail> = {
   /**
    * Renders items in place.
    *

@@ -1,5 +1,5 @@
 import type { Denops } from "@denops/std";
-import type { IdItem } from "./item.ts";
+import type { Detail, IdItem } from "./item.ts";
 
 /**
  * Parameters for collecting items.
@@ -14,7 +14,7 @@ export type CollectParams = {
 /**
  * Source that collects items.
  */
-export type Source<T> = {
+export type Source<T extends Detail> = {
   /**
    * Collects items.
    *

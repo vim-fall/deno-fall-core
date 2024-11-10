@@ -1,6 +1,6 @@
 import type { Denops } from "@denops/std";
 
-import type { IdItem } from "./item.ts";
+import type { Detail, IdItem } from "./item.ts";
 
 /**
  * Parameters for curating items.
@@ -21,7 +21,7 @@ export type CurateParams = {
  *
  * Acts as an interactive `Source`.
  */
-export type Curator<T> = {
+export type Curator<T extends Detail> = {
   /**
    * Curates items based on the provided parameters.
    *

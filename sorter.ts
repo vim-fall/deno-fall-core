@@ -1,11 +1,11 @@
 import type { Denops } from "@denops/std";
 import type { Promish } from "./_typeutil.ts";
-import type { IdItem } from "./item.ts";
+import type { Detail, IdItem } from "./item.ts";
 
 /**
  * Parameters for sorting items.
  */
-export type SortParams<T> = {
+export type SortParams<T extends Detail> = {
   /**
    * Array of items to sort.
    */
@@ -15,7 +15,7 @@ export type SortParams<T> = {
 /**
  * Sorter that arranges items in order.
  */
-export type Sorter<T> = {
+export type Sorter<T extends Detail> = {
   /**
    * Sorts items in place.
    *

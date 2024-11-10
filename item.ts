@@ -1,7 +1,17 @@
 /**
+ * A detail attribute base type.
+ */
+export type Detail = Record<PropertyKey, unknown>;
+
+/**
+ * An empty detail attribute.
+ */
+export type EmptyDetail = Record<never, never>;
+
+/**
  * An item processed by the picker.
  */
-export type IdItem<T> = {
+export type IdItem<T extends Detail> = {
   /**
    * Unique identifier for the item.
    */
@@ -41,7 +51,7 @@ export type IdItem<T> = {
 /**
  * An item displayed in the picker.
  */
-export type DisplayItem<T> = IdItem<T> & {
+export type DisplayItem<T extends Detail> = IdItem<T> & {
   /**
    * Display label for the item in the picker.
    *
