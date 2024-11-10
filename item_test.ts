@@ -1,5 +1,5 @@
 import { assertType, type IsExact } from "@std/testing/types";
-import type { Detail, UnitDetail } from "./item.ts";
+import type { Detail, DetailUnit } from "./item.ts";
 
 Deno.test("Detail", async (t) => {
   await t.step("is usable as a type constraint", () => {
@@ -30,9 +30,9 @@ Deno.test("Detail", async (t) => {
   });
 });
 
-Deno.test("UnitDetail", async (t) => {
+Deno.test("DetailUnit", async (t) => {
   await t.step("is NOT usable as a type constraint", () => {
-    function constraint<T extends UnitDetail>(_: T) {}
+    function constraint<T extends DetailUnit>(_: T) {}
     constraint({});
     constraint({ a: "" });
     constraint({ a: "", b: "" });
@@ -51,10 +51,10 @@ Deno.test("UnitDetail", async (t) => {
   });
 
   await t.step("is an unit of Detail", () => {
-    assertType<IsExact<UnitDetail & { a: string }, { a: string }>>(true);
+    assertType<IsExact<DetailUnit & { a: string }, { a: string }>>(true);
     // misc
-    assertType<IsExact<UnitDetail, UnitDetail>>(true);
-    assertType<IsExact<UnitDetail & UnitDetail, UnitDetail>>(true);
-    assertType<IsExact<UnitDetail & Detail, Detail>>(true);
+    assertType<IsExact<DetailUnit, DetailUnit>>(true);
+    assertType<IsExact<DetailUnit & DetailUnit, DetailUnit>>(true);
+    assertType<IsExact<DetailUnit & Detail, Detail>>(true);
   });
 });

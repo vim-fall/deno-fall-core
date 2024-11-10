@@ -6,7 +6,7 @@ export type Detail = Record<PropertyKey, unknown>;
 /**
  * An unit of Detail.
  */
-export type UnitDetail = Record<never, never>;
+export type DetailUnit = Record<never, never>;
 
 /**
  * An item processed by the picker.
