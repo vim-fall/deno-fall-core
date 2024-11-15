@@ -9,6 +9,7 @@
     "./item": "./item.ts",
     "./matcher": "./matcher.ts",
     "./previewer": "./previewer.ts",
+    "./refiner": "./refiner.ts",
     "./renderer": "./renderer.ts",
     "./sorter": "./sorter.ts",
     "./source": "./source.ts",
