@@ -10,6 +10,34 @@ export type Theme = {
    * Characters used for dividers.
    */
   divider: Divider;
+  /**
+   * Characters used for the spinner.
+   */
+  spinner?: readonly string[];
+  /**
+   * Characters used for the head symbol of the input component.
+   */
+  headSymbol?: string;
+  /**
+   * Characters used for the fail symbol of the input component.
+   */
+  failSymbol?: string;
+  /**
+   * Icon used for the matcher indicator.
+   */
+  matcherIcon?: string;
+  /**
+   * Icon used for the sorter indicator.
+   */
+  sorterIcon?: string;
+  /**
+   * Icon used for the renderer indicator.
+   */
+  rendererIcon?: string;
+  /**
+   * Icon used for the previewer indicator.
+   */
+  previewerIcon?: string;
 };
 
 /**
